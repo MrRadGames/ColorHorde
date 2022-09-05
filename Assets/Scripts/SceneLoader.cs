@@ -10,20 +10,29 @@ public class SceneLoader : MonoBehaviour {
     int splashScreenDuration = 3;
     int currentSceneIndex;
 
+    [SerializeField]
+    public Animator transition;
+
     void Start() {
         currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         if (currentSceneIndex == 0) {
-            StartCoroutine(WaitForTime(splashScreenDuration));
+            StartCoroutine(WaitForSplash(splashScreenDuration));
         }
     }
 
-    IEnumerator WaitForTime(int seconds) {
+    IEnumerator WaitForSplash(int seconds) {
         yield return new WaitForSeconds(seconds);
-        LoadNextScene();
+        LoadMainMenu();
     }
 
     public void LoadNextScene() {
         SceneManager.LoadScene(currentSceneIndex + 1);
+    }
+
+    IEnumerator LoadSceneWithAnimation(string sceneName) {
+        transition.SetTrigger("start");
+        yield return new WaitForSeconds(timeToWait);
+        SceneManager.LoadScene(sceneName);
     }
 
     public void LoadSplashScreen() {
@@ -31,11 +40,15 @@ public class SceneLoader : MonoBehaviour {
     }
 
     public void LoadMainMenu() {
-        SceneManager.LoadScene("MainMenu");
+        StartCoroutine(LoadSceneWithAnimation("MainMenu"));
     }
 
     public void LoadOptionsScreen() {
-        SceneManager.LoadScene("Options");
+        StartCoroutine(LoadSceneWithAnimation("Options"));
+    }
+
+    public void LoadGameScene() {
+        StartCoroutine(LoadSceneWithAnimation("GameScene"));
     }
 
     public void QuitGame() {
