@@ -17,7 +17,7 @@ public class MusicManager : MonoBehaviour
             DontDestroyOnLoad(this);
             MusicManager.instance = this;
             audioSource = GetComponent<AudioSource>();
-            /*audioSource.volume = PlayerPrefsController.GetMasterVolume();*/
+            audioSource.volume = PreferencesController.GetMasterVolume();
             PlaySong();
         } else {
             Destroy(gameObject);

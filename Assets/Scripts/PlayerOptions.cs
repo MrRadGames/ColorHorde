@@ -59,6 +59,7 @@ public class PlayerOptions : MonoBehaviour
 
     public void BackPressed() {
         if (startingMusicOn) { TurnMusicOn(); } else { TurnMusicOff(); }
+        PreferencesController.SetMasterVolume(startingVolume);
         sceneLoader.LoadMainMenu();
     }
 }

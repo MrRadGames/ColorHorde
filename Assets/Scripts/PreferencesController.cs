@@ -23,7 +23,7 @@ public class PreferencesController : MonoBehaviour
     }
 
     public static float GetMasterVolume() {
-        return PlayerPrefs.GetFloat(MASTER_VOLUME_KEY);
+        return PlayerPrefs.GetFloat(MASTER_VOLUME_KEY, MAX_VOLUME);
     }
 
     public static void SetMusicOn(bool musicOn) {

@@ -12,10 +12,14 @@ public class GameManager : MonoBehaviour
     Color lastColor = new Color(1,1,1);
     GameColor gameColor;
     int clicks = 0;
+    int rows = 14;
+    int nextToLastColumnIndex;
 
     // Start is called before the first frame update
     void Start()
     {
+        nextToLastColumnIndex = (rows*rows)-rows;
+
         gameColor = new GameColor();
         Color[] colors = gameColor.GetColorOptions();
 
@@ -75,13 +79,13 @@ public class GameManager : MonoBehaviour
         grid[index].captured = true;
 
         // Check above
-        if(index % 14 != 0) { CaptureSquareIfMatch(index-1, color); }
+        if(index % rows != 0) { CaptureSquareIfMatch(index-1, color); }
         // Check below
-        if((index+1) % 14 != 0) { CaptureSquareIfMatch(index+1, color); }
+        if((index+1) % rows != 0) { CaptureSquareIfMatch(index+1, color); }
         // Check left
-        if(index > 13) { CaptureSquareIfMatch(index-14, color); }
+        if(index > rows-1) { CaptureSquareIfMatch(index-rows, color); }
         // Check right
-        if(index < 182) { CaptureSquareIfMatch(index+14, color); }
+        if(index < nextToLastColumnIndex) { CaptureSquareIfMatch(index+rows, color); }
     }
 
     private void ResetSeenFlag() {
@@ -91,9 +95,9 @@ public class GameManager : MonoBehaviour
     }
 
     private IEnumerator UpdateColors(Color color, int startingIndex) {
-        int lastSquareIndex = startingIndex + 14;
+        int lastSquareIndex = startingIndex + rows;
         for (int idx = startingIndex; idx < lastSquareIndex; idx++) { 
-            if(idx % 14 == 0 && idx < 182) {
+            if(idx % rows == 0 && idx < nextToLastColumnIndex) {
                 StartCoroutine(UpdateColors(color, lastSquareIndex));
             }
             
