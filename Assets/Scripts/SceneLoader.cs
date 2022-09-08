@@ -47,6 +47,10 @@ public class SceneLoader : MonoBehaviour {
         StartCoroutine(LoadSceneWithAnimation("Options"));
     }
 
+    public void LoadInstructionsScreen() {
+        StartCoroutine(LoadSceneWithAnimation("Instructions"));
+    }
+
     public void LoadGameScene() {
         StartCoroutine(LoadSceneWithAnimation("GameScene"));
     }

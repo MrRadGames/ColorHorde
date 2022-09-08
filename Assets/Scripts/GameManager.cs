@@ -35,10 +35,8 @@ public class GameManager : MonoBehaviour
         clicks = 0;
         updateClicksDisplay();
 
-        Color[] colors = gameColor.GetColorOptions();
         foreach (SquareItem item in grid) {
-            int colorIndex = Random.Range(0, 6);
-            item.renderer.color = colors[colorIndex];
+            item.renderer.color = gameColor.GetRandomColor();
             item.captured = false;
             item.seen = false;
         }

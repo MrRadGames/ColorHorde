@@ -30,6 +30,15 @@ namespace Assets.Classes {
             return "No match";
         }
 
+        public Color GetBlue() {
+            return blue;
+        }
+
+        public Color GetRandomColor() {
+            int colorIndex = Random.Range(0, colorOptions.Length);
+            return colorOptions[colorIndex];
+        }
+
         public bool CompareColor(Color a, Color b) {
             return (a.r == b.r && a.g == b.g && a.r == b.r);
         }
