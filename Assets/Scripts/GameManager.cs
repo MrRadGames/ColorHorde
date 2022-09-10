@@ -7,6 +7,8 @@ using System.Collections;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI clickDisplay;
+    [SerializeField] GameObject pauseMenu;
+    [SerializeField] GameObject restartCanvas;
 
     SquareItem[] grid;
     Color lastColor = new Color(1,1,1);
@@ -14,6 +16,8 @@ public class GameManager : MonoBehaviour
     int clicks = 0;
     int rows = 14;
     int nextToLastColumnIndex;
+
+    bool isPaused = false;
 
     // Start is called before the first frame update
     void Start()
@@ -35,7 +39,28 @@ public class GameManager : MonoBehaviour
         SetupGame();
     }
 
+    private void Update() {
+        if(Input.GetKeyDown(KeyCode.Escape) && isPaused) {
+            Unpause();
+        } else if(Input.GetKeyDown(KeyCode.Escape)) {
+            Pause();
+        }
+    }
+
+    private void Pause() {
+        restartCanvas.SetActive(false);
+        pauseMenu.SetActive(true);
+        isPaused = true;
+    }
+
+    public void Unpause() {
+        restartCanvas.SetActive(true);
+        pauseMenu.SetActive(false);
+        isPaused = false;
+    }
+
     public void SetupGame() {
+        if(isPaused) { return; }
         clicks = 0;
         updateClicksDisplay();
 
@@ -54,7 +79,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void ColorClicked(Color color) {
-        if (color.Equals(lastColor)) { return; }
+        if (color.Equals(lastColor) || isPaused) { return; }
         clicks++;
         updateClicksDisplay();
         CaptureSquares(color);

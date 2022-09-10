@@ -1,14 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Assets.Classes;
+using UnityEngine.UI;
 
 public class PlayerOptions : MonoBehaviour
 {
 
     [SerializeField] TextMeshProUGUI onButton;
     [SerializeField] TextMeshProUGUI offButton;
+
+    [SerializeField] Slider slider;
 
     bool startingMusicOn = false;
     bool musicOn = false;
@@ -30,8 +31,18 @@ public class PlayerOptions : MonoBehaviour
 
         volume = PreferencesController.GetMasterVolume();
         startingVolume = volume;
-        musicManager = FindObjectOfType<MusicManager>();
+        slider.value = startingVolume;
+        musicManager = MusicManager.instance;
         sceneLoader = FindObjectOfType<SceneLoader>();
+    }
+
+    private void Update() {
+        if(Mathf.Abs(volume-slider.value) > Mathf.Epsilon) {
+            musicManager.SetVolume(slider.value);
+            volume = slider.value;
+            PreferencesController.SetMasterVolume(volume);
+        }
+        
     }
 
     public void TurnMusicOff() {
@@ -58,7 +69,8 @@ public class PlayerOptions : MonoBehaviour
     }
 
     public void BackPressed() {
-        if (startingMusicOn) { TurnMusicOn(); } else { TurnMusicOff(); }
+        if (startingMusicOn && !musicOn) { TurnMusicOn(); } else { TurnMusicOff(); }
+        musicManager.SetVolume(startingVolume);
         PreferencesController.SetMasterVolume(startingVolume);
         sceneLoader.LoadMainMenu();
     }

@@ -1,20 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PreferencesController : MonoBehaviour
 {
     // Keys
-    const string MASTER_VOLUME_KEY = "master volume";
+    const string MASTER_VOLUME_KEY = "master_volume";
     const string MUSIC_ON_KEY = "music_on";
 
     // Constraints
     const float MIN_VOLUME = 0f;
     const float MAX_VOLUME = 1f;
+    const float DEFAULT_VOLUME = 0.5f;
 
     public static void SetMasterVolume(float volume) {
         if (volume >= MIN_VOLUME && volume <= MAX_VOLUME) {
-            Debug.Log("Master volume set to: " + volume.ToString());
             PlayerPrefs.SetFloat(MASTER_VOLUME_KEY, volume);
         }
         else {
@@ -23,7 +21,7 @@ public class PreferencesController : MonoBehaviour
     }
 
     public static float GetMasterVolume() {
-        return PlayerPrefs.GetFloat(MASTER_VOLUME_KEY, MAX_VOLUME);
+        return PlayerPrefs.GetFloat(MASTER_VOLUME_KEY, DEFAULT_VOLUME);
     }
 
     public static void SetMusicOn(bool musicOn) {

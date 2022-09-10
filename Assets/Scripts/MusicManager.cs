@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MusicManager : MonoBehaviour
 {
-    static MusicManager instance;
+    public static MusicManager instance;
 
     [SerializeField] AudioClip[] songs;
     
@@ -12,16 +10,23 @@ public class MusicManager : MonoBehaviour
 
     int soundtrackIndex = 1;
 
-    void Start() {
-        if(MusicManager.instance == null) {
+    private void Awake() {
+        if (MusicManager.instance == null) {
             DontDestroyOnLoad(this);
             MusicManager.instance = this;
             audioSource = GetComponent<AudioSource>();
             audioSource.volume = PreferencesController.GetMasterVolume();
-            PlaySong();
-        } else {
+            if (PreferencesController.GetMusicOn()) {
+                PlaySong();
+            }
+        }
+        else {
             Destroy(gameObject);
         }
+    }
+
+    void Start() {
+        
 
     }
 
@@ -45,6 +50,7 @@ public class MusicManager : MonoBehaviour
 
     public void TurnMusicOff() {
         audioSource.Stop();
+        soundtrackIndex = soundtrackIndex == songs.Length - 1 ? 0 : soundtrackIndex + 1;
     }
 
     public void TurnMusicOn() {
